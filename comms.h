@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "uart.h"
 
 /**
     \brief Envoie un packet comprenant l'info de tout les inputs de la manette. UART doit déja être initié

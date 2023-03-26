@@ -9,7 +9,7 @@
 
 void send_packet(uart_e port, uint8_t x, uint8_t y, uint8_t potentiometre,bool S1,bool S2,bool S3,bool S4,bool S5,bool S6,bool S7) {
     
-    uart_put_byte(port, 0)
+    uart_put_byte(port, 0);
     uint8_t result = (S1 << 7) | (S2 << 6) | (S3 << 5) | (S4 << 4) | (S5 << 3) | (S6 << 2) | (S7 << 1) | 1;
 
     if (x == 0) {
@@ -26,7 +26,6 @@ void send_packet(uart_e port, uint8_t x, uint8_t y, uint8_t potentiometre,bool S
     
     char packet[5] = {x,y,potentiometre,result,'\0'};
     uart_put_string(port, packet);
-    ;
 }
 
 // DEFINE char packet[4] = {0}; AVANT LA WHILE (j'ai peur que memory overload et que ca crash en moment donne pck on a creer trop de variable)
