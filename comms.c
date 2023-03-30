@@ -4,12 +4,12 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "uart.h"
-
-
+#include "lcd.h"
+#include <util/delay.h>
 
 void send_packet(uart_e port, uint8_t x, uint8_t y, uint8_t potentiometre,bool S1,bool S2,bool S3,bool S4,bool S5,bool S6,bool S7) {
     
-    uart_put_byte(port, 0)
+    uart_put_byte(port, 0);
     uint8_t result = (S1 << 7) | (S2 << 6) | (S3 << 5) | (S4 << 4) | (S5 << 3) | (S6 << 2) | (S7 << 1) | 1;
 
     if (x == 0) {
@@ -26,6 +26,7 @@ void send_packet(uart_e port, uint8_t x, uint8_t y, uint8_t potentiometre,bool S
     
     char packet[5] = {x,y,potentiometre,result,'\0'};
     uart_put_string(port, packet);
+    
 }
 
 // DEFINE char packet[4] = {0}; AVANT LA WHILE (j'ai peur que memory overload et que ca crash en moment donne pck on a creer trop de variable)
@@ -34,25 +35,23 @@ void send_packet(uart_e port, uint8_t x, uint8_t y, uint8_t potentiometre,bool S
 
 // TODO : verifier que la solution marche
 
-void receive_packet(uart_e port, char* packet){
-
-    uint8_t pas_un_buffer = 1;
+void receive_packet(uart_e port, char *packet){
+	
+    uint8_t trashBin = 1;
     
     if(uart_is_rx_buffer_empty(port)==0){    
         
-        while (pas_un_buffer!=0)
+        while (trashBin!=0)
         {
-            pas_un_buffer = uart_get_byte(port);
+            trashBin = uart_get_byte(port);
+			_delay_ms(2);
         }
-
         for (int i = 0; i < 4; i++)
         {
             packet[i] = uart_get_byte(port);
+			_delay_ms(1);
         }
-               
     }
-
-    buffer = 1;
 }
 
 
@@ -63,4 +62,3 @@ void uint8_to_bool_array(uint8_t value, bool* result){
         result[8 - i - 1] = (value & (1 << i)) ? TRUE : FALSE;
     }
 }
-
