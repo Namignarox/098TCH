@@ -26,7 +26,6 @@ void send_packet(uart_e port, uint8_t x, uint8_t y, uint8_t potentiometre,bool S
     
     char packet[5] = {x,y,potentiometre,result,'\0'};
     uart_put_string(port, packet);
-    ;
 }
 
 // DEFINE char packet[4] = {0}; AVANT LA WHILE (j'ai peur que memory overload et que ca crash en moment donne pck on a creer trop de variable)
@@ -37,13 +36,13 @@ void send_packet(uart_e port, uint8_t x, uint8_t y, uint8_t potentiometre,bool S
 
 void receive_packet(uart_e port, char* packet){
 
-    uint8_t buffer = 1;
+    uint8_t pas_un_buffer = 1;
     
     if(uart_is_rx_buffer_empty(port)==0){    
         
-        while (buffer!=0)
+        while (pas_un_buffer!=0)
         {
-            buffer = uart_get_byte(port);
+            pas_un_buffer = uart_get_byte(port);
         }
 
         for (int i = 0; i < 4; i++)
